@@ -1,0 +1,70 @@
+body{
+background-color:#484848 ;
+}
+
+
+
+h1
+{
+text-align:center;
+color:#F2F2F2;
+background-color:#E00000;
+height:100px;
+line-height:100px;
+}
+
+
+img
+{
+position: absolute;
+left:10px;
+top:130px;
+visibility:hidden;
+border: 3px solid black;
+}
+
+
+form
+{
+text-align:center;
+background-color:#E00000 ;
+float:right;
+clear:right;
+width:450px;
+}
+
+#tshirt
+{
+visibility:visible;
+}
+
+
+
+table
+{
+position: absolute;
+left:470px;
+color:#F2F2F2;
+clear:left;
+border: 1px solid #fff;
+width:400px;
+height: 200px;
+}
+
+
+
+table td
+{
+border: 1px solid #fff;
+}
+
+
+
+table td#total
+{
+width:100px;
+}
+
+
+input:invalid { background-color: pink; color: green; }
+input:valid { background-color: white; color: black; }
