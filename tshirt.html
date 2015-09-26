@@ -1,0 +1,528 @@
+<html>
+<head>
+<title>T-Shirt Order</title>
+
+<link rel="stylesheet" href="tshirt.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="tshirt.css" />
+
+<script type="text/javascript">
+
+
+// Main display function
+function doDisplay()
+{
+
+	totalprice= 0;
+	logoprice=0;
+	baseprice=0;
+	logos = 0;
+	discountprice=0;
+	deliveryprice = 0;
+
+
+	// Specify cost of logo for size of t-shirt 
+	
+	if(document.getElementById('small').checked)
+	{
+		baseprice = 8;
+		logoprice = 1;
+		size=250;
+	}
+	else if(document.getElementById('medium').checked)
+	{
+		baseprice = 10;
+		logoprice = 2;
+		size=350;
+	}
+	else if(document.getElementById('large').checked)
+	{
+		baseprice = 12;
+		logoprice = 3;
+		size=450;
+	}
+	
+	
+	
+	document.getElementById('tshirt').width= size;
+	document.getElementById('tshirt').height= size;
+	document.getElementById('redtrim').width= size;
+	document.getElementById('redtrim').height= size;
+	document.getElementById('heartlogo').width= size;
+	document.getElementById('heartlogo').height= size;
+	document.getElementById('redfmlogo').width= size;
+	document.getElementById('redfmlogo').height= size;
+	document.getElementById('corkcitypic').width= size;
+	document.getElementById('corkcitypic').height= size;
+	document.getElementById('corkpics').width= size;
+	document.getElementById('corkpics').height= size;
+	document.getElementById('eveningechologo').width= size;
+	document.getElementById('eveningechologo').height= size;
+
+	
+
+	// If a logo is checked, add it to total number of logos(more cost)
+	if (document.getElementById('checkredtrim').checked)
+	{
+		document.getElementById('redtrim').style.visibility="visible";
+		logos+=1;
+	}
+	// If not checked, hide logo and don't count cost
+	else
+	{
+		document.getElementById('redtrim').style.visibility="hidden";
+	}
+
+
+	if (document.getElementById('checkheartlogo').checked)
+	{
+		document.getElementById('heartlogo').style.visibility="visible";
+		logos+=1;
+	}
+	else
+	{
+		document.getElementById('heartlogo').style.visibility="hidden";
+	}
+
+	if (document.getElementById('checkredfmlogo').checked)
+	{
+		document.getElementById('redfmlogo').style.visibility="visible";
+		logos+=1;
+	}
+	else
+	{
+		document.getElementById('redfmlogo').style.visibility="hidden";
+	}
+
+
+	if (document.getElementById('checkcorkcitypic').checked)
+	{
+		document.getElementById('corkcitypic').style.visibility="visible";
+		logos+=1;
+	}
+	else
+	{
+	document.getElementById('corkcitypic').style.visibility="hidden";
+	}
+
+	if (document.getElementById('checkcorkpics').checked)
+	{
+		document.getElementById('corkpics').style.visibility="visible";
+		logos+=1;
+	}
+	else
+	{
+		document.getElementById('corkpics').style.visibility="hidden";
+	}
+
+	if (document.getElementById('checkeveningechologo').checked)
+	{
+		document.getElementById('eveningechologo').style.visibility="visible";
+		logos+=1;
+	}
+	else
+	{
+		document.getElementById('eveningechologo').style.visibility="hidden";
+	}
+
+	
+	// Specify delivery cost
+	if(document.getElementById('checkdelivery').checked)
+	{
+		deliveryprice += 8;
+	}
+
+	// Apply discount if email ends with '@mycit.ie'
+	email= document.myform.email.value;
+	eleng = email.length;
+	count = (eleng)-9;
+	echeck = email.substring(count,eleng);
+	if(echeck=='@mycit.ie'){
+		discountprice+=5;
+	}
+
+	// To calculate total price do the following:
+	totalprice = (logos*logoprice) + baseprice + deliveryprice - discountprice;
+	
+	document.getElementById('base').innerHTML = baseprice;
+	document.getElementById('delivery').innerHTML = deliveryprice;
+	document.getElementById('logoprice').innerHTML = logoprice;
+	document.getElementById('logos').innerHTML = logos;
+	document.getElementById('discountprice').innerHTML = discountprice;
+	document.getElementById('total').innerHTML = totalprice;
+	}
+
+
+
+
+// The following function validates PPS number, euro banknote, credit card number etc.
+
+function validateEverything(){			
+	
+	// Euro note checker
+	var euro = document.myform.euroinp.value;
+	euro = euro.toUpperCase();
+	valid = new Boolean(true)
+	
+	
+	if(euro==""){
+		valid = false;
+	}
+	
+	
+	if(euro.length!=12){
+
+		valid = false;
+	}
+	
+
+	var num = euro.substring(2,12);
+
+	var total=0;
+	var x;
+	
+	for(var i=0;i<num.length;i++){
+		x = parseInt(num.charAt(i), 10);
+		total += x;
+		
+		if(!(x<=9 || x>=0)){   
+			valid = false;
+		}
+	
+	}
+	
+	var modChar = (euro.charCodeAt(0)-64);
+
+			total += modChar;
+	
+	var europaChar = euro.charAt(1);
+
+	if(!(europaChar<=9 || europaChar>=0)){  
+			europaChar = (europaChar.charCodeAt(0)-54);
+			
+			}
+	else {
+		europaChar = parseInt(europaChar.charAt(0), 10);
+	}
+		
+		total += europaChar;
+	
+	var totalCheck = total.toString();
+	
+	var num1 = parseInt(totalCheck.charAt(0), 10);
+	var num2 = parseInt(totalCheck.charAt(1), 10);
+	var checker = (num1 + num2);
+	
+
+	if(checker!=8){
+	valid = false;
+	}
+	else
+	{
+	valid = true;
+	}
+	
+	// Display the following colour warnings if input is incorrect
+	if(valid == false)
+	{
+	document.getElementById('euroinp').style.background = "yellow";
+	document.getElementById('euroinp').style.border = "solid red 2px";
+	}	
+	
+	// If input is valid, display the following colours
+	if(valid == true)
+	{
+	document.getElementById('euroinp').style.background = "white";
+	document.getElementById('euroinp').style.border = "solid green 2px";
+	}	
+	
+	
+	
+	
+	
+	// PPS number validation
+	var pps = document.myform.ppsinp.value;
+	pps = pps.toUpperCase();
+	valid = new Boolean(true);
+	//check if null
+	
+	if(pps==""){
+		valid = false;
+	}
+	
+	if(pps.length!=8 || pps.length!=9){
+		valid = false;
+	}
+	
+
+	var num = pps.substring(0,7);
+	var x;
+	
+	for(var i=0;i<num.length;i++){
+		x = parseInt(num.charAt(i), 10);
+
+		if(!(x<=9 || x>=0)){  
+			valid = false;
+		}
+	}
+	
+	
+	j = 8;
+	var total = 0;
+	var thisNum;
+	var newNum;
+	
+	for(i=0;i<num.length;i++){
+		thisNum = num.charAt(i);		
+		newNum = (thisNum * j);
+		j--;
+		total = total + newNum;
+	}
+	
+	var modNum = (total%23) + 64;
+	
+	var modChar = pps.charCodeAt(7);
+
+	if(pps.length == 9)
+	{
+			var modChar1 = pps.charCodeAt(8)-56;
+			total += modChar1;
+			}
+
+	var modNum = (total%23) + 64;
+			
+	
+	if(modNum!=modChar){
+		valid = false;
+	}
+	else{
+	valid = true;
+	}
+	
+	// Display the following colour warnings if input is incorrect
+	if(valid == false)
+	{
+	document.getElementById('ppsinp').style.background = "yellow";
+	document.getElementById('ppsinp').style.border = "solid red 2px";
+	}	
+	
+	// If input is valid, display the following colours
+	if(valid == true)
+	{
+	document.getElementById('ppsinp').style.background = "white";
+	document.getElementById('ppsinp').style.border = "solid green 2px";
+	}	
+	
+	
+	
+	
+	// Credit card number validation
+	var ccn = document.myform.cardno.value;
+	ccn = ccn.toUpperCase();
+	valid = new Boolean(true);
+	
+	//check if null
+	if(ccn==""){
+		valid = false;
+	}
+	
+	
+	// Check number length
+	if(ccn.length!=15 || ccn.length!=16){
+		valid = false;
+	}
+	
+	
+	var number = ccn.substring(0,15);
+	var x;
+	
+	for(var i=0;i<number.length;i++){
+		x = parseInt(number.charAt(i), 10);
+
+		if(!(x<=9 || x>=0)){  
+			valid = false;
+		}
+	}
+	
+	
+	j = 16;
+	var totalNo = 0;
+	var thisNumber;
+	var newNumber;
+	
+	for(i=0;i<number.length;i++){
+		thisNumber = number.charAt(i);		
+		newNumber = (thisNumber * j);
+		j--;
+		totalNo = totalNo + newNumber;
+	}
+	
+	var modNum = (total%23) + 64;
+	
+	var modChar = ccn.charCodeAt(15);
+
+	if(ccn.length == 16)
+	{
+			var modChar1 = ccn.charCodeAt(8)-56;
+			totalNo += modChar1;
+			}
+
+	var modNum = (totalNo%23) + 64;
+			
+	
+	if(modNum!=modChar){
+		valid = false;
+	}
+	else{
+	valid = true;
+	}
+	
+	
+
+	
+// Display the following colour warnings if input is incorrect
+	if(valid == false)
+	{
+	document.getElementById('cardno').style.background = "yellow";
+	document.getElementById('cardno').style.border = "solid red 2px";
+	}	
+	
+	// If input is valid, display the following colours
+	if(valid == true)
+	{
+	document.getElementById('cardno').style.background = "white";
+	document.getElementById('cardno').style.border = "solid green 2px";
+	}
+	
+	
+	
+}
+
+</script>
+</head>
+
+<link rel="stylesheet" href="tshirt.css" type="text/css" />
+
+<body>
+
+<h1>Burke's T-Shirt's</h1>
+
+
+<img src="tshirt.png" width="360" height="360"  alt="tshirt" id="tshirt"/>
+<img src="redtrim.png" width="500" height="500"  alt="redtrim" id="redtrim"/>
+<img src="heartlogo.png" width="500" height="500"  alt="heartlogo" id="heartlogo"/>
+<img src="corkcitypic.png" width="500" height="500" alt="corkcitypic" id="corkcitypic"/>
+<img src="corkpics.png" width="500" height="500" alt="corkpics" id="corkpics"/>
+<img src="redfmlogo.png" width="500" height="500" alt="redfmlogo" id="redfmlogo"/>
+<img src="eveningechologo.png" width="500" height="500" alt="eveningechologo" id="eveningechologo"/>
+
+
+<form name="myform" id="tshirtform" onsubmit ="return validateEverything();" method="post" action="http://atlantis.cit.ie/displayvalues.php">
+	<p>T-SHIRT ORDER</p>
+	
+		
+	------------------------- T-Shirt Size -------------------------</br>
+	
+	<input type="radio" id="small" name ="size" onclick = "doDisplay()" value="Small" > Small
+	<input type="radio" id="medium"name ="size"  onclick = "doDisplay()" value="Medium"  checked> Medium
+	<input type="radio" id="large" name ="size" onclick = "doDisplay()" value="Large"> Large
+
+	
+	</br>
+	</br>
+	------------------------- Logos -------------------------</br>
+
+	<input type="checkbox" id="checkredtrim" name='redtrim' onclick="doDisplay()"> Red Trim
+	</br>
+	<input type="checkbox" id="checkheartlogo" name='heartlogo'  onclick="doDisplay()"> I Love Cork
+	</br>
+	<input type="checkbox" id="checkredfmlogo" name='redfmlogo' onclick="doDisplay()"> RedFM
+	</br>
+	<input type="checkbox" id="checkcorkcitypic" name='corkcitypic'  onclick="doDisplay()"> Cork City Image
+	</br>
+	<input type="checkbox" id="checkcorkpics" name='corkpics' onclick="doDisplay()"> Cork Symbols	
+	</br>
+	<input type="checkbox" id="checkeveningechologo" name='eveningechologo' onclick="doDisplay()"> Evening Echo
+	</br>
+	</br>
+	
+		
+	--------------------- Delivery -------------------- </br>
+	<input type="radio" id="checkdelivery" name ="delivery" onclick = "doDisplay()" checked > 24 Hour Express Delivery (&euro;8)
+	</br>
+	<input type="radio" id="checkdelivery" name ="delivery" onclick = "doDisplay()" > Standard Delivery (Free)
+	
+	<p>
+		<label>First Name:</label>
+		<input required type = "text" name="firstname">
+	</p>
+	<p>
+		<label>Surname:</label>
+		<input required type = "text" name="surname">
+	</p>
+	<p>
+		<label>Address:</br></label>
+			<textarea name="address" cols="40" rows="5" placeholder="Please specify the delivery address for the T-Shirt"></textarea>
+	</p>
+	
+	<p> 
+		 <label>Telephone Number:</label> 
+		 <input type="telNo" name="telNo" onblur = 'doDiscount(telNo)'> 
+	</p>
+	
+	<p> 
+		 <label>E-mail address:</label> 
+		 <input required type="email" name="email" onblur='doDisplay()'> 
+	</p>
+	
+	<p>
+		<input type="radio" name="sex" value="male" /> Male
+		<input type="radio" name="sex" value="female" /> Female
+	</p>
+	
+		<p>
+		<label>Extra Information:</br></label>
+		<textarea name="extraInfo" cols="40" rows="5" placeholder="Please give any additional information"></textarea>
+	</p>
+	
+	<p>
+	<label>Euro Bank Note Checker</label>
+	<input type="text" name="euroinp" id ="euroinp" onblur = 'validateEverything(this)' />
+	</p>
+	
+	<p>
+	<label>PPS Number Checker</label>
+	<input type="text" name="ppsinp" id ="ppsinp" onblur = 'validateEverything(this)' />
+	</p>
+	
+	
+	<p>
+	<label>Credit Card Number Validator</label>
+	<input type="text" name="cardno" id ="cardno" onblur = 'validateEverything(this)' />
+	</p>
+	
+	<p>
+		Rate Order Process: </br>
+		1------------------------10</br>
+		
+		<input required autocomplete type="range" min="0" max="10" name="orderProcessRating" value="0"/>
+	</p>
+
+	<input type="submit" value="Submit Data"/>
+	<br>
+
+</form>
+
+<div id = "pricetable">
+	<table>
+	<tr><td>T-Shirt Price (&euro;) </td><td id="base">0</td></tr>
+	<tr><td>Delivery Price (&euro;) </td><td id="delivery">0</td></tr>
+	<tr><td>Number Of Logos</td><td id="logos">0</td></tr>
+	<tr><td>Price per Logo (&euro;) </td><td id="logoprice">0</td></tr>
+	<tr><td>Discount (&euro;) </td><td id="discountprice">0</td></tr>
+	<tr><td>Total Price (&euro;) </td><td id="total">0</td></tr>
+	</table>
+</div>	
+	
+
+</body>
+</html>
